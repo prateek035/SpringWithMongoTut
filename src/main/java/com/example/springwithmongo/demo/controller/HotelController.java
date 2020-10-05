@@ -1,8 +1,7 @@
 package com.example.springwithmongo.demo.controller;
 
 import com.example.springwithmongo.demo.models.Hotel;
-import com.example.springwithmongo.demo.repository.HotelRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.springwithmongo.demo.service.HotelService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,10 +11,10 @@ import java.util.Optional;
 @RequestMapping("/hotels")
 public class HotelController {
 
-    private HotelRepository hotelRepository;
+    private HotelService hotelService;
 
-    public HotelController(HotelRepository hotelRepository) {
-        this.hotelRepository = hotelRepository;
+    public HotelController(HotelService hotelService) {
+        this.hotelService = hotelService;
     }
 
     @GetMapping("/")
@@ -25,43 +24,43 @@ public class HotelController {
 
     @GetMapping("/all")
     public List<Hotel> getAllHotel() {
-        return this.hotelRepository.findAll();
+        return hotelService.getAllHotel();
     }
 
     @PutMapping
     public void insertHotel(@RequestBody Hotel hotel) {
         // save will also serve the purpose
-        this.hotelRepository.insert(hotel);
+        hotelService.addHotel(hotel);
     }
 
     @PostMapping
     public void updateHotel(@RequestBody Hotel hotel) {
         // save can perform insert and update both ..
-        this.hotelRepository.save(hotel);
+        hotelService.updateHotel(hotel);
     }
 
     @DeleteMapping("/{id}")
     public void deleteHotel(@PathVariable("id") String id) {
-        this.hotelRepository.deleteById(id);
+        hotelService.deleteHotel(id);
     }
 
     @GetMapping("/{id}")
     public Optional<Hotel> getHotelById(@PathVariable("id") String id) {
-        return this.hotelRepository.findById(id);
+        return hotelService.getHotelById(id);
     }
 
     @GetMapping("/price/{maxPrice}")
     public List<Hotel> getHotelByPricePerNight(@PathVariable("maxPrice") int maxPrice) {
-        return this.hotelRepository.findByPricePerNightLessThan(maxPrice);
+        return hotelService.getHotelByPricePerNight(maxPrice);
     }
 
     @GetMapping("/address/city/{city}")
     public List<Hotel> getHotelByCity(@PathVariable("city") String city) {
-        return this.hotelRepository.findByCity(city);
+        return hotelService.getHotelByCity(city);
     }
 
     @GetMapping("/address/country/{country}")
     public List<Hotel> getHotelByCountry(@PathVariable("country") String country) {
-        return this.hotelRepository.findByCountry(country);
+        return hotelService.getHotelByCountry(country);
     }
 }
