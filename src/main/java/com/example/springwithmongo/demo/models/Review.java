@@ -1,40 +1,28 @@
 package com.example.springwithmongo.demo.models;
 
-// TODO : add hotelid
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@NoArgsConstructor
+@Data
+@Document("Reviews")
 public class Review {
+
+    @Id
+    private String id;
     private String userName;
     private double rating;
     private boolean approved;
+    private String hotelId;
 
-    protected Review(){}
-
-    public Review(String userName, double rating, boolean approved) {
-        this.userName = userName;
-        this.rating = rating;
+    public Review(String userName, double rating, boolean approved, String hotelId) {
         this.approved = approved;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
+        this.hotelId = hotelId;
+        this.rating = rating;
         this.userName = userName;
     }
 
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
-    public boolean isApproved() {
-        return approved;
-    }
-
-    public void setApproved(boolean approved) {
-        this.approved = approved;
-    }
 }

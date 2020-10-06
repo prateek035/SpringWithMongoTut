@@ -18,17 +18,12 @@ public class Hotel {
     @Indexed(direction = IndexDirection.ASCENDING)
     private int pricePerNight;
     private Address address;
-    private List<Review> reviews;
 
-    protected Hotel() {
-        this.reviews = new ArrayList<>();
-    }
 
-    public Hotel(String name, int pricePerNight, Address address, List<Review> reviews) {
+    public Hotel(String name, int pricePerNight, Address address) {
         this.name = name;
         this.pricePerNight = pricePerNight;
         this.address = address;
-        this.reviews = reviews;
     }
 
     public String getId() {
@@ -63,11 +58,5 @@ public class Hotel {
         this.address = address;
     }
 
-    public List<Review> getReviews() {
-        return reviews;
-    }
 
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
 }
