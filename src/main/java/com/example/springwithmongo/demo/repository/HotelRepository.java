@@ -1,6 +1,8 @@
 package com.example.springwithmongo.demo.repository;
 
 import com.example.springwithmongo.demo.models.Hotel;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -17,8 +19,8 @@ public interface HotelRepository extends MongoRepository<Hotel, String> {
     List<Hotel> findByPricePerNightLessThan(int maxPrice);
 
     @Query(value = "{'address.city':?0}")
-    List<Hotel> findByCity (String city);
+    Page<Hotel> findByCity(String city, Pageable pageable);
 
     @Query(value = "{'address.country':?0}")
-    List<Hotel> findByCountry(String country);
+    Page<Hotel> findByCountry(String country, Pageable pageable);
 }

@@ -2,13 +2,14 @@ package com.example.springwithmongo.demo.controller;
 
 import com.example.springwithmongo.demo.models.Hotel;
 import com.example.springwithmongo.demo.service.HotelService;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/hotels")
+@RequestMapping("/api/hotels")
 public class HotelController {
 
     private HotelService hotelService;
@@ -39,12 +40,12 @@ public class HotelController {
         hotelService.updateHotel(hotel);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/id/{id}")
     public void deleteHotel(@PathVariable("id") String id) {
         hotelService.deleteHotel(id);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public Optional<Hotel> getHotelById(@PathVariable("id") String id) {
         return hotelService.getHotelById(id);
     }
@@ -54,13 +55,15 @@ public class HotelController {
         return hotelService.getHotelByPricePerNight(maxPrice);
     }
 
-    @GetMapping("/address/city/{city}")
-    public List<Hotel> getHotelByCity(@PathVariable("city") String city) {
-        return hotelService.getHotelByCity(city);
+    @GetMapping(path = "/address/city/{city}", params = {"pageNo","size"})
+    public List<Hotel> getHotelByCity(@PathVariable("city") String city, @RequestParam("pageNo") int pageNo,
+                                      @RequestParam("size") int size) {
+        return hotelService.getHotelByCity(city, pageNo, size);
     }
 
-    @GetMapping("/address/country/{country}")
-    public List<Hotel> getHotelByCountry(@PathVariable("country") String country) {
-        return hotelService.getHotelByCountry(country);
+    @GetMapping(path = "/address/country/{country}", params = {"pageNo","size"})
+    public List<Hotel> getHotelByCountry(@PathVariable("country") String country, @RequestParam("pageNo") int pageNo,
+                                         @RequestParam("size") int size) {
+        return hotelService.getHotelByCountry(country, pageNo, size);
     }
 }

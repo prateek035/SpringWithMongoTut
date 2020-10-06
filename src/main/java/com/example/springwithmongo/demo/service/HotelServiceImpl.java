@@ -3,8 +3,13 @@ package com.example.springwithmongo.demo.service;
 import com.example.springwithmongo.demo.models.Hotel;
 import com.example.springwithmongo.demo.repository.HotelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.AbstractPageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,13 +46,21 @@ public class HotelServiceImpl implements HotelService{
     }
 
     @Override
-    public List<Hotel> getHotelByCity(String city) {
-        return hotelRepository.findByCity(city);
+    public List<Hotel> getHotelByCity(String city, int pageNo, int size) {
+        try {
+            return hotelRepository.findByCity(city,  PageRequest.of(pageNo, size)).getContent();
+        }catch(IllegalArgumentException e) {
+            return new ArrayList<>();
+        }
     }
 
     @Override
-    public List<Hotel> getHotelByCountry(String country) {
-        return hotelRepository.findByCountry(country);
+    public List<Hotel> getHotelByCountry(String country, int pageNo, int size) {
+        try{
+            return hotelRepository.findByCountry(country, PageRequest.of(pageNo, size)).getContent();
+        }catch(IllegalArgumentException e) {
+            return new ArrayList<>();
+        }
     }
 
     @Override
