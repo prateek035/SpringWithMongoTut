@@ -1,8 +1,9 @@
 package com.example.springwithmongo.demo.controller;
 
+import com.example.springwithmongo.demo.dto.HotelListResponseDTO;
 import com.example.springwithmongo.demo.models.Hotel;
 import com.example.springwithmongo.demo.service.HotelService;
-import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,19 +52,19 @@ public class HotelController {
     }
 
     @GetMapping("/price/{maxPrice}")
-    public List<Hotel> getHotelByPricePerNight(@PathVariable("maxPrice") int maxPrice) {
-        return hotelService.getHotelByPricePerNight(maxPrice);
+    public ResponseEntity<List<Hotel>> getHotelByPricePerNight(@PathVariable("maxPrice") int maxPrice) {
+        return ResponseEntity.ok().body(hotelService.getHotelByPricePerNight(maxPrice));
     }
 
     @GetMapping(path = "/address/city/{city}", params = {"pageNo","size"})
-    public List<Hotel> getHotelByCity(@PathVariable("city") String city, @RequestParam("pageNo") int pageNo,
-                                      @RequestParam("size") int size) {
+    public HotelListResponseDTO getHotelByCity(@PathVariable("city") String city, @RequestParam("pageNo") int pageNo,
+                                               @RequestParam("size") int size) {
         return hotelService.getHotelByCity(city, pageNo, size);
     }
 
     @GetMapping(path = "/address/country/{country}", params = {"pageNo","size"})
-    public List<Hotel> getHotelByCountry(@PathVariable("country") String country, @RequestParam("pageNo") int pageNo,
-                                         @RequestParam("size") int size) {
+    public HotelListResponseDTO getHotelByCountry(@PathVariable("country") String country, @RequestParam("pageNo") int pageNo,
+                                                @RequestParam("size") int size) {
         return hotelService.getHotelByCountry(country, pageNo, size);
     }
 }

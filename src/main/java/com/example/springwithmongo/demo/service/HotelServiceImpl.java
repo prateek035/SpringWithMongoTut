@@ -1,12 +1,12 @@
 package com.example.springwithmongo.demo.service;
 
+import com.example.springwithmongo.demo.dto.HotelListResponseDTO;
 import com.example.springwithmongo.demo.models.Hotel;
 import com.example.springwithmongo.demo.repository.HotelRepository;
+import com.example.springwithmongo.demo.util.ResponseMapper;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.AbstractPageRequest;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,6 +18,9 @@ public class HotelServiceImpl implements HotelService{
 
     @Autowired
     HotelRepository hotelRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     @Override
@@ -46,20 +49,22 @@ public class HotelServiceImpl implements HotelService{
     }
 
     @Override
-    public List<Hotel> getHotelByCity(String city, int pageNo, int size) {
+    public HotelListResponseDTO getHotelByCity(String city, int pageNo, int size) {
         try {
-            return hotelRepository.findByCity(city,  PageRequest.of(pageNo, size)).getContent();
+            return ResponseMapper.successListOfHotelResponse(
+                    hotelRepository.findByCity(city, PageRequest.of(pageNo, size)).getContent());
         }catch(IllegalArgumentException e) {
-            return new ArrayList<>();
+            return ResponseMapper.errorListOfHotelResponse(e.getMessage());
         }
     }
 
     @Override
-    public List<Hotel> getHotelByCountry(String country, int pageNo, int size) {
+    public HotelListResponseDTO getHotelByCountry(String country, int pageNo, int size) {
         try{
-            return hotelRepository.findByCountry(country, PageRequest.of(pageNo, size)).getContent();
+            return ResponseMapper.successListOfHotelResponse(
+             hotelRepository.findByCountry(country, PageRequest.of(pageNo, size)).getContent());
         }catch(IllegalArgumentException e) {
-            return new ArrayList<>();
+            return ResponseMapper.errorListOfHotelResponse(e.getMessage());
         }
     }
 
